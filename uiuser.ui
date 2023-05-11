@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>510</width>
+    <height>360</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1200</width>
+    <height>720</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="video">
+      <property name="minimumSize">
+       <size>
+        <width>540</width>
+        <height>600</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>540</width>
+        <height>720</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../MinorProject/Dataset/im10.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionAdminView"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <action name="actionAdminView">
+   <property name="text">
+    <string>AdminView</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
