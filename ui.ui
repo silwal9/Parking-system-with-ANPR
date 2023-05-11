@@ -41,6 +41,12 @@
         <height>720</height>
        </size>
       </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -115,12 +121,6 @@
     </property>
     <addaction name="actionUserView"/>
    </widget>
-   <widget class="QMenu" name="menuAbout">
-    <property name="title">
-     <string>More</string>
-    </property>
-    <addaction name="actionDetails"/>
-   </widget>
    <widget class="QMenu" name="menuInput">
     <property name="title">
      <string>Input</string>
@@ -130,7 +130,6 @@
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuInput"/>
-   <addaction name="menuAbout"/>
   </widget>
   <action name="actionUserView">
    <property name="text">

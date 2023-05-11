@@ -66,8 +66,8 @@ def vecrec(prev, cap):
     # show the thresh and original video
     mask= imutils.resize(edged, height=600)
 
-    cv2.putText(frame, 'Motion threshold: {}'.format(vehile), (0, 50), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
-    cv2.imshow('Original Video', frame)
+    #cv2.putText(frame, 'Motion threshold: {}'.format(vehile), (0, 50), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+    #cv2.imshow('Original Video', frame)
 
     return vehile
 

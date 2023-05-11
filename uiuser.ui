@@ -118,13 +118,7 @@
     </property>
     <addaction name="actionAdminView"/>
    </widget>
-   <widget class="QMenu" name="menuAbout">
-    <property name="title">
-     <string>About</string>
-    </property>
-   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuAbout"/>
   </widget>
   <action name="actionAdminView">
    <property name="text">
