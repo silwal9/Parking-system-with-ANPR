@@ -43,7 +43,8 @@ class VideoThread(QThread):
         vdetect= False
         checkframe = False
         path = i
-        cap = cv2.VideoCapture(path, cv2.CAP_DSHOW)
+        #cap = cv2.VideoCapture(path, cv2.CAP_DSHOW)
+        cap = cv2.VideoCapture("vid000.mp4")
         time.sleep(2)  # time to allow for camera to set up
         success , prev = cap.read()
 
