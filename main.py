@@ -7,8 +7,6 @@ import cv2
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
 import numpy as np
 from collections import Counter
-import csv  # import the csv module         #
-
 strings=['']
 def tally(strings):
     # Create a dictionary to store the count of each string
@@ -23,7 +21,7 @@ class VideoThread(QThread):
 
     def run(self):
         # capture from web cam
-        cap = cv2.VideoCapture("vid3f.mp4")
+        cap = cv2.VideoCapture("vid1f.mp4")
         i = 0
         while True:
             try:
@@ -48,26 +46,13 @@ class App(QWidget):
         # create the label that holds the image
         self.image_label = QLabel(self)
         self.image_label.resize(self.disply_width, self.display_height)
-
-        # create a text label for the video feed            ##
-        self.video_label = QLabel('Video Feed', self)
-
-        # create a text label for the CSV data
-        self.csv_label = QLabel('Number Plate Data', self)           ##
+        # create a text label
+        self.textLabel = QLabel(ttxt)
 
         # create a vertical box layout and add the two labels
         vbox = QVBoxLayout()
-        vbox.addWidget(self.video_label)              #
         vbox.addWidget(self.image_label)
-        vbox.addWidget(self.csv_label)                 #
-
-        # read data from the CSV file and add it to the CSV label   ##
-        with open('data.csv', 'r') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                vbox.addWidget(QLabel('| '.join(row), self))        ##
-
-
+        vbox.addWidget(self.textLabel)
         # set the vbox layout as the widgets layout
         self.setLayout(vbox)
 

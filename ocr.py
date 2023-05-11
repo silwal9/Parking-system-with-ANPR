@@ -12,7 +12,6 @@ def cleanup_text(text):
     return "".join([c if ord(c) < 128 else "" for c in text]).strip()
 
 
-#pytesseract.pytesseract.tesseract_cmd = r'C:\Users\ACER\AppData\Local\Tesseract-OCR\tesseract.exe'
 pytesseract.pytesseract.tesseract_cmd = r'E:\Tesseract-OCR\tesseract.exe'
 
 
@@ -60,9 +59,9 @@ def readtxt(orig):
                                   color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
                 res = cv2.rectangle(frame, tuple(approx[0][0]), tuple(approx[2][0]), (0, 255, 0), 3)
                 print(text)
-                return res
+                return res,text
             except:
                 print("error")
-                return frame
+                return frame,0
 
 
