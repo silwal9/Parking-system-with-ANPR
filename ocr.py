@@ -45,6 +45,9 @@ def readtxt(orig):
                                    [-1, 5, -1],
                                    [0, -1, 0]])
                 cropped_image = cv2.filter2D(cropped_image, ddepth=-1, kernel=kernel)
+                cropped_image= imutils.resize(cropped_image,height=50)
+                cv2.imshow('Frame',cropped_image)
+                key = cv2.waitKey(30)
                 alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                 options = "-c tessedit_char_whitelist={}".format(alphanumeric)
                 options += " --psm {}".format(13)  # set

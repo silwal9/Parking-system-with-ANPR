@@ -27,44 +27,8 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="1">
-     <widget class="QPushButton" name="UpdateButton">
-      <property name="text">
-       <string>Update table</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QTableWidget" name="table">
-      <column>
-       <property name="text">
-        <string>Date</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Vehicle number</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Entry</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Exit</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Fee</string>
-       </property>
-      </column>
-     </widget>
-    </item>
     <item row="0" column="3" rowspan="2">
-     <widget class="QLabel" name="video">
+     <widget class="QLabel" name="videoadm">
       <property name="minimumSize">
        <size>
         <width>540</width>
@@ -81,10 +45,13 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../MinorProject/Dataset/im10.jpg</pixmap>
+       <pixmap>../../../Downloads/9737ef12b8584aa796a8fc3189254b42.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -92,6 +59,42 @@
      <widget class="Line" name="line">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QTableWidget" name="table">
+      <column>
+       <property name="text">
+        <string>Date</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Entry</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Vehicle number</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Fee</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="UpdateButton">
+      <property name="text">
+       <string>Update table</string>
       </property>
      </widget>
     </item>
@@ -114,15 +117,39 @@
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>About</string>
+     <string>More</string>
     </property>
+    <addaction name="actionDetails"/>
+   </widget>
+   <widget class="QMenu" name="menuInput">
+    <property name="title">
+     <string>Input</string>
+    </property>
+    <addaction name="actionVideoFile"/>
+    <addaction name="actionLiveFeed"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuInput"/>
    <addaction name="menuAbout"/>
   </widget>
   <action name="actionUserView">
    <property name="text">
-    <string>UserView</string>
+    <string>User View</string>
+   </property>
+  </action>
+  <action name="actionVideoFile">
+   <property name="text">
+    <string>Video File</string>
+   </property>
+  </action>
+  <action name="actionLiveFeed">
+   <property name="text">
+    <string>Live Feed</string>
+   </property>
+  </action>
+  <action name="actionDetails">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>
