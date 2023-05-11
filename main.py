@@ -56,7 +56,7 @@ class CamVideoThread(QThread):
 
     def run(self):
         # capture from web cam
-        cap = cv2.VideoCapture("Dataset/Test/vid1r.mp4")
+        cap = cv2.VideoCapture("vid6r.mp4")
         i = 0
         while True:
                 ret, cv_img = cap.read()

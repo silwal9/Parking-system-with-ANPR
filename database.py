@@ -42,8 +42,43 @@ class DataEntry():
         num= df['v_number'] == V_number
         result = (num).any()
         if result:
+            #check
+            '''enter = df.loc[num, 'entry time'].iloc[-1]
+            exit = self.entry[-1]
+            duration = self.calcTime(enter, exit)
+            minutes_parked = duration.total_seconds() / 60
+            if minutes_parked <= 30:
+                fee = 500
+            elif minutes_parked <= 60:
+                fee = 1000
+            else:
+                fee = 1500
+            df.loc[num, 'exit time'] = exit
+            df.loc[num, 'fee'] = fee'''
+            #
+
+            #check2
+            df.loc[num, 'exit time'] = self.entry
+            enter = df.loc[num, 'entry time'].iloc[-1]
+            exit = self.entry[-1]
+            duration = self.calcTime(enter, exit)
+            total_seconds = duration.total_seconds()
+            fee_per_second = 0.0277  # Rs 100/hr= Rs 0.0277/sec
+            fee = total_seconds * fee_per_second
+            df.loc[num,'fee']=fee
+
+
             #time = df.loc[num,'entry time']
-            df.loc[num,'exit time']=self.entry
+            '''df.loc[num,'exit time']=self.entry
+            duration = self.calcTime(enter, exit)
+            minutes_parked = duration.total_seconds() / 60
+            if minutes_parked <= 30:
+                fee = 500
+            elif minutes_parked <= 60:
+                fee = 1000
+            else:
+                fee = 1500
+            df.loc[num, 'fee'] = fee'''
             #df.loc[num, 'fee'] = 1500
             #enter = time
             #exit = self.entry
