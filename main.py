@@ -4,6 +4,9 @@ from skimage.segmentation import clear_border
 
 import numpy as np
 import imutils
+import pandas as pd
+import time
+
 filename=''
 while filename != 'Q':
     filename = input("Enter File name") + '.jpg'
@@ -45,6 +48,14 @@ while filename != 'Q':
     font = cv2.FONT_HERSHEY_SIMPLEX
     res = cv2.putText(img, text=text, org=(approx[0][0][0], approx[1][0][1]+60), fontFace=font, fontScale=1, color=(0,255,0), thickness=2, lineType=cv2.LINE_AA)
     res = cv2.rectangle(img, tuple(approx[0][0]), tuple(approx[2][0]), (0,255,0),3)
+
+    # Data is stored in CSV file
+    raw_data = {'date': [time.asctime(time.localtime(time.time()))],
+                'v_number': [text]}
+
+    df = pd.DataFrame(raw_data, columns=['date', 'v_number'])
+    df.to_csv('data.csv')
+
     cv2.imshow('',cv2.cvtColor(res, cv2.COLOR_BGR2RGB))
     cv2.waitKey(0)
     print(text)
