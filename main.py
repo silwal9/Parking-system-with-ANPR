@@ -1,3 +1,6 @@
+#RUN from terminal by changing location to main.py directory and
+# executing: python main.py -i "D:\Projects\minor project\Parcc_code\code"
+
 from imutils.video import VideoStream
 from imutils.perspective import four_point_transform
 from pytesseract import Output
