@@ -8,7 +8,7 @@ from os.path import dirname, join
 from PyQt5.QtGui import QPixmap
 import qr
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtWidgets import QMainWindow ,QApplication, QWidget, QDialog, QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow ,QApplication, QWidget, QFileDialog, QTableWidgetItem
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
 import pandas as pd
@@ -28,10 +28,10 @@ def tally(strings):
 
 
 class VideoThread(QThread):
-    def __init__(self):
+    def __init__(self,pathname):
         super().__init__()
         self._run_flag = True
-        self.path = "vid000.mp4"
+        self.path = pathname
 
     change_pixmap_signal = pyqtSignal(np.ndarray)
 
@@ -41,41 +41,51 @@ class VideoThread(QThread):
         # cap = cv2.VideoCapture(path, cv2.CAP_DSHOW) #for webcam
         time.sleep(2)  # time to allow for camera to set up`
         success , prev = cap.read()
-
+        notfound = 0
+        recframe=0
         frame = 0
         fee = 0
         chkframe = 0
         vehiclefee = False
         vdetect = False
         checkframe = False
+        plno=''
         while cap.isOpened():
             ret, cv_img = cap.read()
             #print(ret,cap.isOpened)
             if ret:
                 vfound=vecrec.vecrec(prev, cv_img)
                 if vfound != 0 and not vdetect:
-                    frame +=1
-                    print(frame)
+                    recframe +=1
                     checkframe=True
-                    if frame > 15 and chkframe <= 45:
+                    if recframe > 15 and chkframe <= 45:
                         vdetect=True
                         checkframe=False
-                        frame=0
-                    elif frame < 15 and chkframe>= 45:
-                        frame=0
+                        recframe=0
+                    elif recframe < 15 and chkframe>= 45:
+                        recframe=0
                         chkframe=0
-                print(chkframe)
                 if checkframe:
                     chkframe+=1
-                if vdetect and (frame <70):
+                print("rec",recframe)
+                if vdetect and (frame <100) and vfound != 0:
                     print(frame)
                     frame+=1
                     cv_img, text = ocr.readtxt(cv_img)
                     if len(str(text)) in [7, 8]:
                         strings.append(text)
-                elif vdetect and not(frame < 70):
+                    notfound=0
+                elif vdetect and frame<100 and vfound==0:
+                    frame += 1
+                    notfound +=1
+                    print("not found",notfound)
+                elif vdetect and not(frame < 100) or notfound>15:
+                    notfound=0
                     vdetect=False
-                    plno = tally(strings)
+                    if len(strings)!=0:
+                        plno = tally(strings)
+                    else:
+                        plno=''
                     strings.clear()
                     if len(plno) in [7,8]:
                         print('plate no.', plno)
@@ -90,13 +100,15 @@ class VideoThread(QThread):
                         screen.setqr(-1,plno)
                         ascreen.loaddata()
                     frame=0
+                    recframe=0
                 prev = cv_img
                 #cv2.putText(cv_img, 'Frame no. : {}'.format(frame), (50, 50), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
                 self.change_pixmap_signal.emit(cv_img)
 
                 # Press Q on keyboard to exit
             else:
-                plno = tally(strings)
+                if len(strings) != 0:
+                    plno = tally(strings)
                 strings.clear()
                 if len(plno) in [7, 8]:
                     print('plate no.', plno)
@@ -113,10 +125,8 @@ class VideoThread(QThread):
                 else:
                     screen.setqr(-1, plno)
                     ascreen.loaddata()
-
-
-                cv2.waitKey(3000)
                 break
+
     def stop(self):
         """Sets run flag to False and waits for thread to finish"""
         self._run_flag = False
@@ -124,14 +134,73 @@ class VideoThread(QThread):
 
 class CamThread(VideoThread):
     def __init__(self):
-        super().__init__()
-        self.path=0
+        super().__init__(0)
 
-    def stop(self):
-        """Sets run flag to False and waits for thread to finish"""
-        self._run_flag = False
-        self.wait()
+    '''def run(self):
+        cap = cv2.VideoCapture(self.path, cv2.CAP_DSHOW) #for webcam
+        time.sleep(2)  # time to allow for camera to set up`
+        success, prev = cap.read()
+        notfound = 0
+        recframe = 0
+        frame = 0
+        fee = 0
+        chkframe = 0
+        vehiclefee = False
+        vdetect = False
+        checkframe = False
+        plno = ''
+        while cap.isOpened():
+            ret, cv_img = cap.read()
+            # print(ret,cap.isOpened)
+            if ret:
+                vfound = vecrec.vecrec(prev, cv_img)
+                if vfound != 0 and not vdetect:
+                    recframe += 1
+                    checkframe = True
+                    if recframe > 15 and chkframe <= 45:
+                        vdetect = True
+                        checkframe = False
+                        recframe = 0
+                    elif recframe < 15 and chkframe >= 45:
+                        recframe = 0
+                        chkframe = 0
+                if checkframe:
+                    chkframe += 1
 
+                if vdetect and (frame < 100) and vfound != 0:
+                    print(frame)
+                    frame += 1
+                    cv_img, text = ocr.readtxt(cv_img)
+                    if len(str(text)) in [7, 8]:
+                        strings.append(text)
+                    notfound = 0
+                elif vdetect and frame < 100 and vfound == 0:
+                    frame += 1
+                    notfound += 1
+                elif vdetect and not (frame < 100) or notfound > 15:
+                    notfound = 0
+                    vdetect = False
+                    if len(strings) != 0:
+                        plno = tally(strings)
+                    strings.clear()
+                    if len(plno) in [7, 8]:
+                        print('plate no.', plno)
+                        vehicle = database.DataEntry(plno)
+                        vehiclefee, fee = vehicle.check(plno)
+                        print(vehiclefee, fee)
+                    if vehiclefee:
+                        screen.setqr(fee, plno)
+                        fee = 0
+                        ascreen.loaddata()
+                    else:
+                        screen.setqr(-1, plno)
+                        ascreen.loaddata()
+                    frame = 0
+                prev = cv_img
+                # cv2.putText(cv_img, 'Frame no. : {}'.format(frame), (50, 50), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+                self.change_pixmap_signal.emit(cv_img)
+
+                break'''
 
 class UserUI(QMainWindow):
     def __init__(self):
@@ -153,7 +222,7 @@ class UserUI(QMainWindow):
             qt_img = qr.qrshow()
             qt_img = self.convert_cv_qt(qt_img)
             self.qr.setPixmap(qt_img)
-            self.fee.setText(str("Fee:" + str(charge)+ " for No. Plate:" + numplate))
+            self.fee.setText(str("Fee:" + str(int(charge))+ " for No. Plate:" + numplate))
         else:
             self.fee.setText(str("Entry completed" + " for No. Plate:" + numplate))
 
@@ -198,8 +267,10 @@ class AdminUI(QMainWindow):
 
         # video parameters:
     def startvdo(self):
+            fname=QFileDialog.getOpenFileName(self, 'Open File', '')
+            print(fname[0])
             # create the video capture thread
-            self.thread = VideoThread()
+            self.thread = VideoThread(fname[0])
             # connect its signal to the update_image slot
             self.thread.change_pixmap_signal.connect(self.update_image)
             # start the thread
@@ -212,7 +283,6 @@ class AdminUI(QMainWindow):
 
 
     def livefeed(self):
-        if not self.thread._run_flag:
             self.camthread=CamThread()
             # connect its signal to the update_image slot
             self.camthread.change_pixmap_signal.connect(self.update_image)
